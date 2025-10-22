@@ -1,8 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
 import { z } from "zod";
-import { signupUserUseCase, SignupCredentials } from "../../useCases/users/signup.useCase";
+import {
+  SignupCredentials,
+  signupUserUseCase,
+} from "../../useCases/users/signup.useCase";
 
-// Esquema de validación para el registro de usuarios
 const signupSchema = z.object({
   email: z.string().email("Formato de correo electrónico inválido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
@@ -17,19 +19,18 @@ export async function signupController(
   next: NextFunction,
 ) {
   try {
-    // Validar los datos de entrada
     const validationResult = signupSchema.safeParse(req.body);
 
     if (!validationResult.success) {
-      throw new Error(validationResult.error.errors[0]?.message || "Datos de registro inválidos");
+      throw new Error(
+        validationResult.error.errors[0]?.message ||
+          "Datos de registro inválidos",
+      );
     }
 
     const userData: SignupCredentials = validationResult.data;
-
-    // Crear el usuario
     const result = await signupUserUseCase(userData);
 
-    // Enviar respuesta exitosa
     res.status(201).json({
       status: "success",
       code: 201,

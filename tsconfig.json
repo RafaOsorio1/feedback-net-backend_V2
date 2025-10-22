@@ -6,6 +6,10 @@
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@prisma/client": ["./node_modules/@prisma/client/index.d.ts"]
+    }
   }
 }

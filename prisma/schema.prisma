@@ -32,80 +32,92 @@ enum EmployeeStatus {
 }
 
 model ISP {
-  id               String        @id @default(uuid())
-  name             String
-  email            String        @unique
-  password         String        // ISP login credentials
-  logo             String?
-  contact          String?
-  website          String?
-  primaryColor     String?
-  secondaryColor   String?
-  address          String?
-  phone            String?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  deletedAt        DateTime?
+  id             String    @id @default(uuid())
+  name           String
+  email          String    @unique
+  password       String // ISP login credentials
+  logo           String?
+  contact        String?
+  website        String?
+  primaryColor   String?
+  secondaryColor String?
+  address        String?
+  phone          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
 
-  employees        Employee[]
-  requests         Request[]
-  analyticLogs     AnalyticLog[]
+  employees       Employee[]
+  requests        Request[]
+  analyticMetrics AnalyticMetric[]
 }
 
 model Employee {
-  id                    String          @id @default(uuid())
-  name                  String
-  email                 String          @unique
-  password              String
-  role                  EmployeeRole    @default(EMPLOYEE)
-  status                EmployeeStatus  @default(ACTIVE)
-  createdAt             DateTime        @default(now())
-  updatedAt             DateTime        @updatedAt
-  deletedAt             DateTime?
+  id        String         @id @default(uuid())
+  name      String
+  email     String         @unique
+  password  String
+  role      EmployeeRole   @default(EMPLOYEE)
+  status    EmployeeStatus @default(ACTIVE)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  deletedAt DateTime?
 
-  ispId                 String
-  isp                   ISP             @relation(fields: [ispId], references: [id])
+  ispId String
+  isp   ISP    @relation(fields: [ispId], references: [id])
 
-  respondedRequests     Request[]       @relation("EmployeeResponse")
-  analyticLogs          AnalyticLog[]
+  respondedRequests Request[]        @relation("EmployeeResponse")
+  analyticMetrics   AnalyticMetric[]
 }
 
 model Request {
-  id              String          @id @default(uuid())
+  id              String        @id @default(uuid())
+  referenceNumber String?       @unique // Will be set by the application
   fullName        String
   phone           String
   address         String
   email           String
   subject         String
-  details         String
-  type            RequestType     // Petition, Complaint, Claim, Suggestion
-  status          RequestStatus   @default(PENDING)
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  details         String        @db.Text
+  type            RequestType // Petition, Complaint, Claim, Suggestion
+  status          RequestStatus @default(PENDING)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
   resolvedAt      DateTime?
   deletedAt       DateTime?
 
-  ispId           String
-  isp             ISP             @relation(fields: [ispId], references: [id])
+  ispId String
+  isp   ISP    @relation(fields: [ispId], references: [id])
 
-  respondedById   String?
-  respondedBy     Employee?       @relation("EmployeeResponse", fields: [respondedById], references: [id])
+  respondedById String?
+  respondedBy   Employee? @relation("EmployeeResponse", fields: [respondedById], references: [id])
 
-  analyticLogs    AnalyticLog[]
+  analyticMetrics AnalyticMetric[]
 }
 
-model AnalyticLog {
-  id           String       @id @default(uuid())
-  type         String       // Example: "CREATE_REQUEST", "UPDATE_STATUS", "RESPONSE"
-  description  String?
-  createdAt    DateTime     @default(now())
+model AnalyticMetric {
+  id              String         @id @default(uuid())
+  period          DateTime
+  type            RequestType
+  status          RequestStatus?
+  totalRequests   Int            @default(0)
+  closedCount     Int            @default(0)
+  inProgressCount Int            @default(0)
+  pendingCount    Int            @default(0)
+  avgResponseTime Float?
 
-  requestId    String?
-  request      Request?     @relation(fields: [requestId], references: [id])
+  ispId String?
+  isp   ISP?    @relation(fields: [ispId], references: [id])
 
-  employeeId   String?
-  employee     Employee?    @relation(fields: [employeeId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Employee   Employee? @relation(fields: [employeeId], references: [id])
+  employeeId String?
+  Request    Request?  @relation(fields: [requestId], references: [id])
+  requestId  String?
 
-  ispId        String?
-  isp          ISP?         @relation(fields: [ispId], references: [id])
+  @@unique([period, type, ispId])
+  @@index([period])
+  @@index([type])
+  @@index([ispId])
 }

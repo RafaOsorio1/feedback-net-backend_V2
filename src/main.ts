@@ -8,7 +8,7 @@ import { databaseManager } from "./libs/databaseManager";
 async function main() {
   // 1. Conectar a la base de datos
   await databaseManager.connect();
-  
+
   // 2. Inicializar aplicación
   const app = new Application();
   app.enableStatic(__dirname + "/public"); // Opcional: solo si necesitas archivos estáticos
@@ -20,12 +20,12 @@ async function main() {
   server.start();
 
   // Manejar cierre de la aplicación
-  process.on('SIGINT', async () => {
+  process.on("SIGINT", async () => {
     await databaseManager.disconnect();
     process.exit(0);
   });
 
-  process.on('SIGTERM', async () => {
+  process.on("SIGTERM", async () => {
     await databaseManager.disconnect();
     process.exit(0);
   });

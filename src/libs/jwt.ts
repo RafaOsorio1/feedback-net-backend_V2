@@ -17,7 +17,7 @@ export function generateJWT(payload: JwtPayload): Promise<string> {
       payload,
       SECRET_KEY,
       {
-        expiresIn: "24h",
+        expiresIn: "2h",
       },
       (err, token) => {
         if (err) {

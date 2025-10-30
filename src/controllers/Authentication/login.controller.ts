@@ -13,6 +13,7 @@ export async function loginController(
   next: NextFunction,
 ) {
   try {
+    console.log("request body", req.body);
     const validationResult = loginSchema.safeParse(req.body);
 
     if (!validationResult.success) {
@@ -23,11 +24,18 @@ export async function loginController(
 
     const loginResult = await loginUserUseCase(credentials);
 
-    res.status(200).json({
-      status: "success",
-      code: 200,
-      data: loginResult,
-    });
+    res
+      .cookie("access_token", loginResult.token, {
+        httpOnly: true,
+        sameSite: "strict",
+        maxAge: 1000 * 60 * 60,
+      })
+      .status(200)
+      .json({
+        status: "success",
+        code: 200,
+        data: loginResult,
+      });
   } catch (error) {
     next(error);
   }

@@ -25,6 +25,7 @@ export async function createRequestController(
     const body = createRequestSchema.safeParse(req.body);
 
     if (!body.success) {
+      console.log("error", JSON.stringify(body.error, null, 2));
       throw new Error("Invalid request data");
     }
 

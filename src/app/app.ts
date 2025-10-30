@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import { logger } from "../middlewares/logger";
@@ -20,6 +21,7 @@ export class Application {
     );
 
     this.app.use(express.json());
+    this.app.use(cookieParser());
     this.app.use(express.urlencoded({ extended: true }));
 
     this.app.use;

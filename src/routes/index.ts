@@ -1,9 +1,9 @@
 import type { Application } from "express";
 import { Router } from "express";
-import ResponseRoutes from "src/controllers/response";
 import UsersRoutes from "../controllers/Authentication/index";
 import ISPsRoutes from "../controllers/ISPs";
 import RequestRoutes from "../controllers/request/index";
+import ResponseRoutes from "../controllers/response/index";
 
 export interface IRoutes {
   readonly name: string;

@@ -1,13 +1,32 @@
 import { databaseManager } from "../../libs/databaseManager";
 
-export async function getRequestByIdUseCase(id: string, ispId: string) {
-  const request = await databaseManager.getDatabase().request.findUnique({
+export async function getRequestByIdUseCase(id: string) {
+  const request = await databaseManager.getDatabase().request.findFirst({
     where: {
-      id,
-      ispId,
+      OR: [{ id }, { referenceNumber: id }],
       deletedAt: null,
     },
     include: {
+      responses: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          employee: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+          isp: {
+            select: {
+              name: true,
+              logo: true,
+            },
+          },
+        },
+      },
       isp: {
         select: {
           name: true,
@@ -33,6 +52,8 @@ export async function getRequestByIdUseCase(id: string, ispId: string) {
   if (!request) {
     throw new Error("Request not found");
   }
+
+  console.log(request);
 
   return request;
 }

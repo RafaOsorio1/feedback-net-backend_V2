@@ -3,26 +3,28 @@ import { z } from "zod";
 import { getRequestByIdUseCase } from "../../useCases/request/getRequestByIdUseCase";
 
 const getRequestByIdSchema = z.object({
-  id: z.string().uuid(),
-  ispId: z.string().uuid(),
+  requestId: z.string().min(1),
 });
 
 export async function getRequestByIdController(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
     const params = getRequestByIdSchema.safeParse({
-      id: req.params.id,
-      ispId: req.params.ispId,
+      requestId: req.params.requestId,
     });
 
     if (!params.success) {
       throw new Error("Invalid request parameters");
     }
 
-    const request = await getRequestByIdUseCase(params.data.id, params.data.ispId);
+    console.log("params.data.requestId", params.data.requestId);
+
+    const request = await getRequestByIdUseCase(params.data.requestId);
+
+    console.log(request);
 
     return res.status(200).json({
       status: "ok",

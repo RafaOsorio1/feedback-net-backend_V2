@@ -45,5 +45,50 @@ export async function createRequestUseCase(requestData: CreateRequestSchema) {
     }),
   ]);
 
-  return request;
+  // get request by id
+  const result = await db.request.findUnique({
+    where: {
+      id: request.id,
+    },
+    include: {
+      responses: {
+        include: {
+          employee: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+          isp: {
+            select: {
+              name: true,
+              logo: true,
+            },
+          },
+        },
+      },
+      isp: {
+        select: {
+          name: true,
+          logo: true,
+        },
+      },
+      respondedBy: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+      analyticMetrics: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 10,
+      },
+    },
+  });
+
+  return result;
 }

@@ -9,7 +9,7 @@ interface LoginCredentials {
 
 interface LoginResponse {
   token: string;
-  user: {
+  isp: {
     id: string;
     email: string;
     name: string;
@@ -29,7 +29,7 @@ export async function loginUserUseCase(
   });
 
   if (!ISP) {
-    throw new Error("Invalid credentials");
+    throw new Error("ISP not found");
   }
 
   const isPasswordValid = await comparePassword(
@@ -51,7 +51,7 @@ export async function loginUserUseCase(
 
   return {
     token,
-    user: {
+    isp: {
       id: ISP.id,
       email: ISP.email,
       name: ISP.name,

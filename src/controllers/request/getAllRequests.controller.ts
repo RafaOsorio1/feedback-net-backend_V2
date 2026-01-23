@@ -9,7 +9,7 @@ const getAllRequestsSchema = z.object({
 export async function getAllRequestsController(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
     const params = getAllRequestsSchema.safeParse({

@@ -47,8 +47,9 @@ model ISP {
   updatedAt      DateTime  @updatedAt
   deletedAt      DateTime?
 
-  employees       Employee[]
+  employees       Employee[] // Relación con los empleado, uno a muchos
   requests        Request[]
+  responses      Response[]
   analyticMetrics AnalyticMetric[]
 }
 
@@ -64,10 +65,11 @@ model Employee {
   deletedAt DateTime?
 
   ispId String
-  isp   ISP    @relation(fields: [ispId], references: [id])
+  isp   ISP    @relation(fields: [ispId], references: [id]) // Relación con el ISP, uno a uno
 
   respondedRequests Request[]        @relation("EmployeeResponse")
-  analyticMetrics   AnalyticMetric[]
+  responses        Response[]
+  analyticMetrics  AnalyticMetric[]
 }
 
 model Request {
@@ -92,7 +94,24 @@ model Request {
   respondedById String?
   respondedBy   Employee? @relation("EmployeeResponse", fields: [respondedById], references: [id])
 
+  responses      Response[]
   analyticMetrics AnalyticMetric[]
+}
+
+model Response {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requestId String
+  request   Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  employeeId String?
+  employee   Employee? @relation(fields: [employeeId], references: [id])
+  
+  ispId      String?
+  isp        ISP?      @relation(fields: [ispId], references: [id])
 }
 
 model AnalyticMetric {

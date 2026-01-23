@@ -1,5 +1,6 @@
 import type { Application } from "express";
 import { Router } from "express";
+import ResponseRoutes from "src/controllers/response";
 import UsersRoutes from "../controllers/Authentication/index";
 import ISPsRoutes from "../controllers/ISPs";
 import RequestRoutes from "../controllers/request/index";
@@ -15,6 +16,7 @@ export interface IRoutes {
 function registerApiRoutes(app: Application, prefix = ""): void {
   app.use(`${prefix}/auth`, new UsersRoutes().router);
   app.use(`${prefix}/request`, new RequestRoutes().router);
+  app.use(`${prefix}/response`, new ResponseRoutes().router);
   app.use(`${prefix}/isp`, new ISPsRoutes().router);
   app.use(`${prefix}/auth/test`, (req, res) => {
     res.send({

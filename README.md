@@ -1,61 +1,138 @@
-# Feedback Backend
+# 🚀 Feedback System - Backend API
 
-Este repositorio contiene el backend de la aplicación Feedback.
+Welcome to the **Feedback System Backend**! A high-performance, scalable API designed to manage customer feedback, requests, and insights for ISPs. Built with a modern tech stack and optimized for seamless deployment.
 
-## Requisitos
+---
 
-- Node.js 20+
-- PNPM (recomendado)
-- Docker (opcional, para desarrollo local con base de datos)
+## 🛠 Tech Stack
 
-## Configuración
+We use a premium selection of technologies to ensure stability, speed, and developer happiness:
 
-1. Copia el archivo `.env.example` a `.env`:
+- **Runtime:** [Node.js 20+](https://nodejs.org/) 🟢
+- **Language:** [TypeScript](https://www.typescriptlang.org/) 💙 (Type-safe and robust)
+- **Framework:** [Express.js](https://expressjs.com/) ⚡ (Fast and minimalist)
+- **Database:** [PostgreSQL](https://www.postgresql.org/) 🐘 (Reliable relational data)
+- **ORM:** [Prisma](https://www.prisma.io/) 💎 (Type-safe database access)
+- **Validation:** [Zod](https://zod.dev/) ✅ (Schema validation)
+- **Authentication:** [JSON Web Tokens (JWT)](https://jwt.io/) 🔐
+- **Storage:** [Cloudinary](https://cloudinary.com/) ☁️ (Media management)
+- **Containerization:** [Docker](https://www.docker.com/) 🐳 & [Docker Compose](https://docs.docker.com/compose/)
+- **Logging:** [Winston](https://github.com/winstonjs/winston) 📝
+
+---
+
+## ✨ Features
+
+- 👤 **ISP & Employee Management:** Multi-level authentication and role-based access control.
+- 📩 **Request Handling:** Manage customer petitions, complaints, and suggestions.
+- 💬 **Dynamic Responses:** Full message history between ISPs and customers.
+- 📊 **Analytics Dashboard:** Metrics on response times and request statuses.
+- 🖼 **Media Support:** Direct image uploads to Cloudinary.
+- 🐳 **Full Dockerization:** One-command setup for development and production.
+
+---
+
+## 🚦 Getting Started
+
+### 📋 Prerequisites
+
+- **Node.js 20** or higher.
+- **PNPM** (recommended) or NPM.
+- **Docker** and **Docker Compose** installed.
+
+### ⚙️ Installation & Configuration
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone <your-repo-url>
+   cd feedback-backend
+   ```
+
+2. **Setup environment variables:**
+
    ```bash
    cp .env.example .env
    ```
-2. Completa las variables de entorno en el archivo `.env`.
 
-## Desarrollo
+   > 💡 _Don't forget to fill in your `DATABASE_URL`, `JWT_KEY`, and `CLOUDINARY` credentials!_
 
-Para iniciar el servidor en modo desarrollo:
+3. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
 
-```bash
-pnpm install
-pnpm dev
-```
+---
 
-Si necesitas la base de datos localmente:
+## 👨‍💻 Development
+
+### 1. Fire up the Database 🐘
+
+We recommend using Docker for your local PostgreSQL instance:
 
 ```bash
 docker-compose up -d db
 ```
 
-## Despliegue
+### 2. Run in Dev Mode ⚡
 
-### Comandos de Prisma
+```bash
+pnpm dev
+```
 
-- Generar el cliente: `pnpm postinstall`
-- Ejecutar migraciones en producción: `pnpm prisma:migrate:deploy`
-- Sembrar (seed) la base de datos: `pnpm prisma:seed`
+The server will start at `http://localhost:3111`.
 
-### Build y Start
+---
+
+## 🗄 Database Management (Prisma)
+
+Keep your database synced and populated with these easy commands:
+
+- 🏗 **Create Migrations:** `npx prisma migrate dev`
+- ✨ **Generate Client:** `pnpm postinstall`
+- 🌱 **Seed Database:** `pnpm prisma:seed`
+- 🖥 **Studio (GUI):** `npx prisma studio`
+
+---
+
+## 🚢 Production & Deployment
+
+### Build & Start Traditional
 
 ```bash
 pnpm build
 pnpm start
 ```
 
-### Docker
+### Build with Docker 🐳
 
-Para construir e iniciar todo el stack con Docker:
+Run the entire stack (API + DB) with one command:
 
 ```bash
 docker-compose up --build
 ```
 
-o solo el backend:
+---
 
-```bash
-docker build -t feedback-backend .
+## 📁 Project Structure
+
+```text
+src/
+ ├── app/           # Express application & server config
+ ├── config/        # Environment & 3rd party configs
+ ├── controllers/   # Request handling logic
+ ├── libs/          # Reusable libraries (JWT, Database, Hash)
+ ├── middlewares/   # Custom Express middlewares
+ ├── routes/        # API route definitions
+ ├── useCases/      # Business logic entry points
+ └── utils/         # Helper functions
+prisma/             # Database schema & migrations
 ```
+
+---
+
+## 🛡 License
+
+This project is licensed under the **ISC License**.
+
+Developed with ❤️ by the Feedback Team.

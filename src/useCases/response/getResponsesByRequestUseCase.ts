@@ -1,4 +1,4 @@
-import { databaseManager } from "src/libs/databaseManager";
+import { databaseManager } from "../../libs/databaseManager";
 
 export async function getResponsesByRequestUseCase(requestId: string) {
   const db = databaseManager.getDatabase();

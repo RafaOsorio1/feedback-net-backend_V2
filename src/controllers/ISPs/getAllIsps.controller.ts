@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { getAllISPsUseCase } from "src/useCases/isp/getAllIspsUseCase";
+import { getAllISPsUseCase } from "../../useCases/isp/getAllIspsUseCase";
 
 export async function getAllISPsController(
   req: Request,

@@ -1,7 +1,7 @@
 import { RequestType } from "@prisma/client";
 import type { NextFunction, Request, Response } from "express";
-import { createRequestUseCase } from "src/useCases/request/createRequestUseCase";
 import { z } from "zod";
+import { createRequestUseCase } from "../../useCases/request/createRequestUseCase";
 
 const createRequestSchema = z.object({
   fullName: z.string(),

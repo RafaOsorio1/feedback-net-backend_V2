@@ -1,4 +1,4 @@
-import { databaseManager } from "src/libs/databaseManager";
+import { databaseManager } from "../../libs/databaseManager";
 
 interface CreateResponseInput {
   content: string;

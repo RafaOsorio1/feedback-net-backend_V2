@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { createResponseUseCase } from "src/useCases/response/createResponseUseCase";
 import { z } from "zod";
+import { createResponseUseCase } from "../../useCases/response/createResponseUseCase";
 
 const createResponseSchema = z.object({
   content: z.string(),

@@ -1,6 +1,6 @@
-import { CreateRequestSchema } from "src/controllers/request/createRequest.controller";
-import { generateReferenceNumber } from "src/utils/referenceGenerator";
+import { CreateRequestSchema } from "../../controllers/request/createRequest.controller";
 import { databaseManager } from "../../libs/databaseManager";
+import { generateReferenceNumber } from "../../utils/referenceGenerator";
 
 export async function createRequestUseCase(requestData: CreateRequestSchema) {
   const db = databaseManager.getDatabase();

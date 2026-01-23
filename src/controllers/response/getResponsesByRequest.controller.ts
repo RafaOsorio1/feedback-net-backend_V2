@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { getResponsesByRequestUseCase } from "src/useCases/response/getResponsesByRequestUseCase";
 import { z } from "zod";
+import { getResponsesByRequestUseCase } from "../../useCases/response/getResponsesByRequestUseCase";
 
 export async function getResponsesByRequestController(
   req: Request,

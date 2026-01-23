@@ -26,7 +26,7 @@ export async function signupUserUseCase(
 ): Promise<SignupResponse> {
   const database = databaseManager.getDatabase();
 
-  const existingUser = await database.user.findUnique({
+  const existingUser = await database.iSP.findUnique({
     where: {
       email: credentials.email,
     },
@@ -39,7 +39,7 @@ export async function signupUserUseCase(
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(credentials.password, salt);
 
-  const user = await database.user.create({
+  const user = await database.iSP.create({
     data: {
       email: credentials.email,
       password: hashedPassword,
@@ -63,8 +63,8 @@ export async function signupUserUseCase(
       id: user.id,
       email: user.email,
       name: user.name,
-      address: user.address,
-      phone: user.phone,
+      address: user.address || "",
+      phone: user.phone || "",
     },
   };
 }

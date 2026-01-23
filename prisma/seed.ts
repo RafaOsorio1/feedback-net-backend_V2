@@ -8,13 +8,7 @@ import {
 import * as bcrypt from "bcryptjs";
 import { generateReferenceNumber } from "../src/utils/referenceGenerator";
 
-// Extend the Prisma client with raw SQL methods
-type ExtendedPrismaClient = PrismaClient & {
-  $executeRawUnsafe: (query: string, ...values: any[]) => Promise<any>;
-  $queryRawUnsafe: (query: string, ...values: any[]) => Promise<any>;
-};
-
-const prisma = new PrismaClient() as ExtendedPrismaClient;
+const prisma = new PrismaClient();
 
 // Helper function to get a random element from an array
 const randomElement = <T>(array: T[]): T =>
@@ -248,51 +242,33 @@ async function main() {
               : null;
 
           try {
-            // First, try to update existing record if it exists
-            const updated = await prisma.$executeRawUnsafe(
-              `
-              UPDATE AnalyticMetric 
-              SET 
-                "totalRequests" = $1,
-                "closedCount" = $2,
-                "inProgressCount" = $3,
-                "pendingCount" = $4,
-                "avgResponseTime" = $5,
-                "updatedAt" = NOW()
-              WHERE "period" = $6 AND "type" = $7 AND "ispId" = $8
-            `,
-              totalRequests,
-              closedRequests,
-              inProgressRequests,
-              pendingRequests,
-              averageResponseTime,
-              period,
-              type,
-              isp.id,
-            );
-
-            // If no rows were updated, insert a new record
-            if (updated === 0) {
-              await prisma.$executeRawUnsafe(
-                `
-                INSERT INTO "AnalyticMetric" (
-                  "period", "type", "status", "totalRequests", "closedCount", 
-                  "inProgressCount", "pendingCount", "avgResponseTime", "ispId",
-                  "createdAt", "updatedAt"
-                ) VALUES (
-                  $1, $2, NULL, $3, $4, $5, $6, $7, $8, NOW(), NOW()
-                )
-              `,
+            await prisma.analyticMetric.upsert({
+              where: {
+                period_type_ispId: {
+                  period: period,
+                  type: type,
+                  ispId: isp.id as string,
+                },
+              },
+              update: {
+                totalRequests,
+                closedCount: closedRequests,
+                inProgressCount: inProgressRequests,
+                pendingCount: pendingRequests,
+                avgResponseTime: averageResponseTime,
+                updatedAt: new Date(),
+              },
+              create: {
                 period,
                 type,
                 totalRequests,
-                closedRequests,
-                inProgressRequests,
-                pendingRequests,
-                averageResponseTime,
-                isp.id,
-              );
-            }
+                closedCount: closedRequests,
+                inProgressCount: inProgressRequests,
+                pendingCount: pendingRequests,
+                avgResponseTime: averageResponseTime,
+                ispId: isp.id,
+              },
+            });
           } catch (error) {
             console.error("Error creating/updating analytic metric:", error);
             throw error;
@@ -303,18 +279,18 @@ async function main() {
   }
 
   // Generate responses for requests
-  console.log('💬 Starting to generate responses...');
+  console.log("💬 Starting to generate responses...");
   const responseTemplates = [
-    'Hemos recibido su solicitud y estamos trabajando en ella.',
-    'Gracias por reportar este problema. Nuestro equipo lo está revisando.',
-    'Hemos actualizado el estado de su solicitud.',
-    '¿Podría proporcionar más detalles sobre su solicitud?',
-    'Su solicitud ha sido resuelta satisfactoriamente.',
-    'Lamentamos los inconvenientes ocasionados. Estamos trabajando en una solución.',
-    'Hemos escalado su solicitud a nuestro equipo técnico.',
-    '¿Podría confirmar si el problema persiste?',
-    'Gracias por su paciencia mientras resolvemos su solicitud.',
-    'Hemos implementado una solución para su problema.'
+    "Hemos recibido su solicitud y estamos trabajando en ella.",
+    "Gracias por reportar este problema. Nuestro equipo lo está revisando.",
+    "Hemos actualizado el estado de su solicitud.",
+    "¿Podría proporcionar más detalles sobre su solicitud?",
+    "Su solicitud ha sido resuelta satisfactoriamente.",
+    "Lamentamos los inconvenientes ocasionados. Estamos trabajando en una solución.",
+    "Hemos escalado su solicitud a nuestro equipo técnico.",
+    "¿Podría confirmar si el problema persiste?",
+    "Gracias por su paciencia mientras resolvemos su solicitud.",
+    "Hemos implementado una solución para su problema.",
   ];
 
   let responseCount = 0;
@@ -323,70 +299,85 @@ async function main() {
 
   for (const req of requests) {
     processedRequests++;
-    console.log(`📝 Processing request ${processedRequests}/${requestCount} (${req.id})`);
-    
+    console.log(
+      `📝 Processing request ${processedRequests}/${requestCount} (${req.id})`,
+    );
+
     // Skip some requests to have variation (10% of requests will have no responses)
     if (Math.random() < 0.1) {
       console.log(`   ⏩ Skipping request (no responses)`);
       continue;
     }
-    
+
     // 1-3 responses per request
     const responsesForThisRequest = Math.floor(Math.random() * 3) + 1;
-    const isp = isps.find(i => i.id === req.ispId);
-    const ispEmployees = employees.filter(e => e.ispId === req.ispId);
-    
-    console.log(`   📨 Generating ${responsesForThisRequest} response(s) for request`);
-    
+    const isp = isps.find((i) => i.id === req.ispId);
+    const ispEmployees = employees.filter((e) => e.ispId === req.ispId);
+
+    console.log(
+      `   📨 Generating ${responsesForThisRequest} response(s) for request`,
+    );
+
     for (let i = 0; i < responsesForThisRequest; i++) {
       const isEmployeeResponse = Math.random() > 0.3; // 70% chance of employee response
       const isFirstResponse = i === 0;
-      
+
       // For the first response, make sure it's from the ISP if the request has a responder
-      const responder = isFirstResponse && req.respondedById 
-        ? { type: 'employee' as const, id: req.respondedById }
-        : isEmployeeResponse && ispEmployees.length > 0
-          ? { type: 'employee' as const, id: randomElement(ispEmployees).id }
-          : { type: 'isp' as const, id: isp!.id };
-      
+      const responder =
+        isFirstResponse && req.respondedById
+          ? { type: "employee" as const, id: req.respondedById }
+          : isEmployeeResponse && ispEmployees.length > 0
+            ? { type: "employee" as const, id: randomElement(ispEmployees).id }
+            : { type: "isp" as const, id: isp!.id };
+
       // Create response data
       const responseData = {
         content: randomElement(responseTemplates),
         requestId: req.id,
         createdAt: new Date(req.createdAt.getTime() + (i + 1) * 3600000), // 1 hour between responses
-        employeeId: responder.type === 'employee' ? responder.id : undefined,
-        ispId: responder.type === 'isp' ? responder.id : undefined,
+        employeeId: responder.type === "employee" ? responder.id : undefined,
+        ispId: responder.type === "isp" ? responder.id : undefined,
       };
-      
+
       try {
         // Create the response
         await prisma.response.create({
-          data: responseData
+          data: responseData,
         });
         responseCount++;
-        console.log(`   ✅ Created ${responder.type} response ${i + 1}/${responsesForThisRequest}`);
-        
+        console.log(
+          `   ✅ Created ${responder.type} response ${i + 1}/${responsesForThisRequest}`,
+        );
+
         // If this is the first response to a PENDING request, update status to IN_PROGRESS
         if (isFirstResponse && req.status === RequestStatus.PENDING) {
           await prisma.request.update({
             where: { id: req.id },
-            data: { 
+            data: {
               status: RequestStatus.IN_PROGRESS,
-              respondedById: responder.type === 'employee' ? responder.id : null
-            }
+              respondedById:
+                responder.type === "employee" ? responder.id : null,
+            },
           });
           console.log(`   🔄 Updated request status to IN_PROGRESS`);
         }
-        
+
         // If this is the last response and the request is in progress, 50% chance to resolve it
-        if (i === responsesForThisRequest - 1 && req.status === RequestStatus.IN_PROGRESS && Math.random() > 0.5) {
-          const newStatus = Math.random() > 0.1 ? RequestStatus.RESOLVED : RequestStatus.CANCELED;
+        if (
+          i === responsesForThisRequest - 1 &&
+          req.status === RequestStatus.IN_PROGRESS &&
+          Math.random() > 0.5
+        ) {
+          const newStatus =
+            Math.random() > 0.1
+              ? RequestStatus.RESOLVED
+              : RequestStatus.CANCELED;
           await prisma.request.update({
             where: { id: req.id },
-            data: { 
+            data: {
               status: newStatus,
-              resolvedAt: new Date()
-            }
+              resolvedAt: new Date(),
+            },
           });
           console.log(`   ✅ Updated request status to ${newStatus}`);
         }

@@ -1,6 +1,7 @@
 import type { Application } from "express";
 import { Router } from "express";
 import UsersRoutes from "../controllers/Authentication/index";
+import EmployeesRoutes from "../controllers/employees/index";
 import ISPsRoutes from "../controllers/ISPs";
 import RequestRoutes from "../controllers/request/index";
 import ResponseRoutes from "../controllers/response/index";
@@ -18,6 +19,7 @@ function registerApiRoutes(app: Application, prefix = ""): void {
   app.use(`${prefix}/request`, new RequestRoutes().router);
   app.use(`${prefix}/response`, new ResponseRoutes().router);
   app.use(`${prefix}/isp`, new ISPsRoutes().router);
+  app.use(`${prefix}/employee`, new EmployeesRoutes().router);
   app.use(`${prefix}/auth/test`, (req, res) => {
     res.send({
       status: "ok",

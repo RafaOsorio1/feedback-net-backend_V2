@@ -10,7 +10,7 @@ function generateJWT(payload) {
     const SECRET_KEY = process.env.JWT_KEY || "default_secret_key_for_development";
     return new Promise((resolve, reject) => {
         jsonwebtoken_1.default.sign(payload, SECRET_KEY, {
-            expiresIn: "24h",
+            expiresIn: "2h",
         }, (err, token) => {
             if (err) {
                 reject(new Error(`Error to generate token: ${err.message}`));

@@ -19,11 +19,11 @@ async function main() {
     // 4. Iniciar el servidor
     server.start();
     // Manejar cierre de la aplicación
-    process.on('SIGINT', async () => {
+    process.on("SIGINT", async () => {
         await databaseManager_1.databaseManager.disconnect();
         process.exit(0);
     });
-    process.on('SIGTERM', async () => {
+    process.on("SIGTERM", async () => {
         await databaseManager_1.databaseManager.disconnect();
         process.exit(0);
     });

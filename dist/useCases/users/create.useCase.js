@@ -7,7 +7,7 @@ async function createUserUseCase(payload) {
     const database = databaseManager_1.databaseManager.getDatabase();
     const salt = await bcrypt.genSalt(10);
     payload.password = await bcrypt.hash(payload.password, salt);
-    const result = await database.user.create({
+    const result = await database.iSP.create({
         data: {
             name: payload.name,
             email: payload.email,

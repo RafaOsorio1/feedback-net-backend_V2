@@ -9,7 +9,7 @@ const databaseManager_1 = require("../../libs/databaseManager");
 const jwt_1 = require("../../libs/jwt");
 async function signupUserUseCase(credentials) {
     const database = databaseManager_1.databaseManager.getDatabase();
-    const existingUser = await database.user.findUnique({
+    const existingUser = await database.iSP.findUnique({
         where: {
             email: credentials.email,
         },
@@ -19,7 +19,7 @@ async function signupUserUseCase(credentials) {
     }
     const salt = await bcryptjs_1.default.genSalt(10);
     const hashedPassword = await bcryptjs_1.default.hash(credentials.password, salt);
-    const user = await database.user.create({
+    const user = await database.iSP.create({
         data: {
             email: credentials.email,
             password: hashedPassword,
@@ -40,8 +40,8 @@ async function signupUserUseCase(credentials) {
             id: user.id,
             email: user.email,
             name: user.name,
-            address: user.address,
-            phone: user.phone,
+            address: user.address || "",
+            phone: user.phone || "",
         },
     };
 }

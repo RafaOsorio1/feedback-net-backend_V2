@@ -16,7 +16,7 @@ export class Application {
     this.app.use(
       cors({
         origin: process.env.CLIENT_URL || "*",
-        methods: ["GET", "POST", "PUT", "DELETE"],
+        methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
       }),
     );
 
@@ -27,8 +27,16 @@ export class Application {
     this.app.use;
 
     this.app.use((req, res, next) => {
-      logger.info(`📥 ${req.method} ${req.url}`);
+      logger.info(`📥 ${req.method} ${req.baseUrl}${req.path}`);
       next();
+
+      res.on("finish", () => {
+        logger.info(`📤 ${req.method} ${req.baseUrl}${req.path}`);
+      });
+
+      res.on("error", (error) => {
+        logger.error(`📤 ${req.method} ${req.baseUrl}${req.path}`, error);
+      });
     });
   }
 

@@ -14,13 +14,13 @@ export interface IRoutes {
   initChildRoutes?(): void;
 }
 
-function registerApiRoutes(app: Application, prefix = ""): void {
-  app.use(`${prefix}/auth`, new UsersRoutes().router);
-  app.use(`${prefix}/request`, new RequestRoutes().router);
-  app.use(`${prefix}/response`, new ResponseRoutes().router);
-  app.use(`${prefix}/isp`, new ISPsRoutes().router);
-  app.use(`${prefix}/employee`, new EmployeesRoutes().router);
-  app.use(`${prefix}/auth/test`, (req, res) => {
+function registerApiRoutes(app: Application): void {
+  app.use(`/api/auth`, new UsersRoutes().router);
+  app.use(`/api/request`, new RequestRoutes().router);
+  app.use(`/api/response`, new ResponseRoutes().router);
+  app.use(`/api/isp`, new ISPsRoutes().router);
+  app.use(`/api/employee`, new EmployeesRoutes().router);
+  app.use(`/api/auth/test`, (req, res) => {
     res.send({
       status: "ok",
       data: "test",
@@ -29,11 +29,9 @@ function registerApiRoutes(app: Application, prefix = ""): void {
 }
 
 export function initRestRoutes(app: Application): void {
-  const prefix = "/api";
-
   app.route("/").all((req, res) => {
     res.send({ status: "OK", data: "API OK" });
   });
 
-  registerApiRoutes(app, prefix);
+  registerApiRoutes(app);
 }

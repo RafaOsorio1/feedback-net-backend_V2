@@ -15,14 +15,6 @@
     "/api/auth/": {
       "get": {
         "description": "",
-        "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -33,14 +25,6 @@
     "/api/auth/login": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "default": {
             "description": ""
@@ -51,14 +35,6 @@
     "/api/auth/signup": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -69,14 +45,6 @@
     "/api/request/": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -88,12 +56,6 @@
       "get": {
         "description": "",
         "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "ispId",
             "in": "path",
@@ -113,12 +75,6 @@
         "description": "",
         "parameters": [
           {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "requestId",
             "in": "path",
             "required": true,
@@ -137,12 +93,6 @@
         "description": "",
         "parameters": [
           {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -159,14 +109,6 @@
     "/api/response/": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -178,12 +120,6 @@
       "get": {
         "description": "",
         "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "requestId",
             "in": "path",
@@ -201,14 +137,6 @@
     "/api/isp/": {
       "get": {
         "description": "",
-        "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -220,12 +148,6 @@
       "get": {
         "description": "",
         "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "ispId",
             "in": "path",
@@ -243,14 +165,6 @@
     "/api/employee/": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -262,12 +176,6 @@
       "patch": {
         "description": "",
         "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "id",
             "in": "path",
@@ -284,12 +192,6 @@
       "delete": {
         "description": "",
         "parameters": [
-          {
-            "name": "prefix",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "id",
             "in": "path",

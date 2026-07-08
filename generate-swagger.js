@@ -118,4 +118,17 @@ const doc = {
 const outputFile = './src/swagger_output.json';
 const routes = ['./src/routes/index.ts'];
 
-swaggerAutogen(outputFile, routes, doc);
+swaggerAutogen(outputFile, routes, doc).then(() => {
+  const fs = require('fs');
+  const data = JSON.parse(fs.readFileSync(outputFile, 'utf8'));
+  for (const path in doc.paths) {
+    if (data.paths[path]) {
+      for (const method in doc.paths[path]) {
+        if (data.paths[path][method]) {
+          data.paths[path][method] = { ...data.paths[path][method], ...doc.paths[path][method] };
+        }
+      }
+    }
+  }
+  fs.writeFileSync(outputFile, JSON.stringify(data, null, 2));
+});

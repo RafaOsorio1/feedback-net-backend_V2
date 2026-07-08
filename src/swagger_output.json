@@ -29,7 +29,29 @@
           "default": {
             "description": ""
           }
-        }
+        },
+        "summary": "Iniciar sesión",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Credenciales de acceso",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "usuario@ejemplo.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456"
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "/api/auth/signup": {
@@ -39,7 +61,41 @@
           "201": {
             "description": "Created"
           }
-        }
+        },
+        "summary": "Registrar ISP",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Datos de registro",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "isp@empresa.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Mi Empresa ISP"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Calle 123"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "12345678"
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "/api/request/": {
@@ -49,7 +105,53 @@
           "201": {
             "description": "Created"
           }
-        }
+        },
+        "summary": "Crear solicitud / ticket",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Datos de la solicitud",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fullName": {
+                  "type": "string",
+                  "example": "Cliente Enojado"
+                },
+                "ispId": {
+                  "type": "string",
+                  "example": "uuid-del-isp"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "12345678"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Su casa"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "cliente@correo.com"
+                },
+                "subject": {
+                  "type": "string",
+                  "example": "Sin internet"
+                },
+                "details": {
+                  "type": "string",
+                  "example": "El modem exploto"
+                },
+                "type": {
+                  "type": "string",
+                  "example": "TECHNICAL_SUPPORT"
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "/api/request/{ispId}": {
@@ -113,7 +215,37 @@
           "201": {
             "description": "Created"
           }
-        }
+        },
+        "summary": "Responder solicitud",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Datos de la respuesta",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "example": "Estamos trabajando en ello"
+                },
+                "requestId": {
+                  "type": "string",
+                  "example": "uuid-del-request"
+                },
+                "employeeId": {
+                  "type": "string",
+                  "example": "uuid-del-empleado"
+                },
+                "ispId": {
+                  "type": "string",
+                  "example": "uuid-del-isp"
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "/api/response/request/{requestId}": {
@@ -169,7 +301,41 @@
           "201": {
             "description": "Created"
           }
-        }
+        },
+        "summary": "Crear empleado",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Datos del empleado",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Juan Técnico"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "juan@empresa.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "TECHNICIAN"
+                },
+                "ispId": {
+                  "type": "string",
+                  "example": "uuid-del-isp"
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "/api/employee/{id}": {

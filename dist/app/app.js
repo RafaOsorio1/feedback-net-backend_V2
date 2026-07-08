@@ -9,6 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const logger_1 = require("../middlewares/logger");
 const routes_1 = require("../routes");
+const swagger_1 = require("../swagger");
 class Application {
     constructor() {
         this.app = (0, express_1.default)();
@@ -17,15 +18,23 @@ class Application {
     configureCore() {
         this.app.use((0, cors_1.default)({
             origin: process.env.CLIENT_URL || "*",
-            methods: ["GET", "POST", "PUT", "DELETE"],
+            methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         }));
         this.app.use(express_1.default.json());
         this.app.use((0, cookie_parser_1.default)());
         this.app.use(express_1.default.urlencoded({ extended: true }));
-        this.app.use;
+        // Serve Swagger Documentation
+        this.app.use("/api-docs", swagger_1.swaggerServe, swagger_1.swaggerSetup);
+        this.app.get("/", (req, res) => res.redirect("/api-docs"));
         this.app.use((req, res, next) => {
-            logger_1.logger.info(`📥 ${req.method} ${req.url}`);
+            logger_1.logger.info(`📥 ${req.method} ${req.baseUrl}${req.path}`);
             next();
+            res.on("finish", () => {
+                logger_1.logger.info(`📤 ${req.method} ${req.baseUrl}${req.path}`);
+            });
+            res.on("error", (error) => {
+                logger_1.logger.error(`📤 ${req.method} ${req.baseUrl}${req.path}`, error);
+            });
         });
     }
     initRestRoutes() {

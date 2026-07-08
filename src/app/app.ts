@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { logger } from "../middlewares/logger";
 import { initRestRoutes } from "../routes";
+import { swaggerServe, swaggerSetup } from "../swagger";
 
 export class Application {
   public readonly app: express.Application;
@@ -24,7 +25,9 @@ export class Application {
     this.app.use(cookieParser());
     this.app.use(express.urlencoded({ extended: true }));
 
-    this.app.use;
+    // Serve Swagger Documentation
+    this.app.use("/api-docs", swaggerServe, swaggerSetup);
+    this.app.get("/", (req, res) => res.redirect("/api-docs"));
 
     this.app.use((req, res, next) => {
       logger.info(`📥 ${req.method} ${req.baseUrl}${req.path}`);

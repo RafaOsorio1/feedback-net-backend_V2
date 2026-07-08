@@ -7,6 +7,15 @@ const doc = {
   },
   host: 'feedback-net-backend-v2.onrender.com',
   schemes: ['https', 'http'],
+  securityDefinitions: {
+    bearerAuth: {
+      type: 'apiKey',
+      name: 'auth-token',
+      in: 'header',
+      description: 'Ingrese su token JWT para autenticación'
+    }
+  },
+  security: [{ bearerAuth: [] }],
   paths: {
     "/api/auth/login": {
       post: {

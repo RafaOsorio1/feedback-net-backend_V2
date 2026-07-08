@@ -11,6 +11,14 @@
     "https",
     "http"
   ],
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "name": "auth-token",
+      "in": "header",
+      "description": "Ingrese su token JWT para autenticación"
+    }
+  },
   "paths": {
     "/api/auth/": {
       "get": {
@@ -372,5 +380,10 @@
         }
       }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }

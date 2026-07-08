@@ -12,7 +12,7 @@
     "http"
   ],
   "paths": {
-    "${prefix}/auth/": {
+    "/api/auth/": {
       "get": {
         "description": "",
         "parameters": [
@@ -30,7 +30,7 @@
         }
       }
     },
-    "${prefix}/auth/login": {
+    "/api/auth/login": {
       "post": {
         "description": "",
         "parameters": [
@@ -48,7 +48,7 @@
         }
       }
     },
-    "${prefix}/auth/signup": {
+    "/api/auth/signup": {
       "post": {
         "description": "",
         "parameters": [
@@ -66,7 +66,7 @@
         }
       }
     },
-    "${prefix}/request/": {
+    "/api/request/": {
       "post": {
         "description": "",
         "parameters": [
@@ -84,7 +84,7 @@
         }
       }
     },
-    "${prefix}/request/{ispId}": {
+    "/api/request/{ispId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -108,7 +108,7 @@
         }
       }
     },
-    "${prefix}/request/get-one/{requestId}": {
+    "/api/request/get-one/{requestId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -132,7 +132,7 @@
         }
       }
     },
-    "${prefix}/request/{id}": {
+    "/api/request/{id}": {
       "delete": {
         "description": "",
         "parameters": [
@@ -156,7 +156,7 @@
         }
       }
     },
-    "${prefix}/response/": {
+    "/api/response/": {
       "post": {
         "description": "",
         "parameters": [
@@ -174,7 +174,7 @@
         }
       }
     },
-    "${prefix}/response/request/{requestId}": {
+    "/api/response/request/{requestId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -198,7 +198,7 @@
         }
       }
     },
-    "${prefix}/isp/": {
+    "/api/isp/": {
       "get": {
         "description": "",
         "parameters": [
@@ -216,7 +216,7 @@
         }
       }
     },
-    "${prefix}/employee/{ispId}": {
+    "/api/employee/{ispId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -240,7 +240,7 @@
         }
       }
     },
-    "${prefix}/employee/": {
+    "/api/employee/": {
       "post": {
         "description": "",
         "parameters": [
@@ -258,7 +258,7 @@
         }
       }
     },
-    "${prefix}/employee/{id}": {
+    "/api/employee/{id}": {
       "patch": {
         "description": "",
         "parameters": [

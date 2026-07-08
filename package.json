@@ -6,7 +6,7 @@
   "packageManager": "pnpm@9.12.3",
   "scripts": {
     "dev": "tsx watch src/main.ts",
-    "build": "prisma generate && tsc",
+    "build": "node generate-swagger.js && prisma generate && tsc && cp src/swagger_output.json dist/",
     "start": "node dist/main.js",
     "postinstall": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
